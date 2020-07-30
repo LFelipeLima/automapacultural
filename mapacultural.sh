@@ -9,8 +9,7 @@ sudo apt-get install git curl npm ruby2.5 ruby2.5-dev -y
 sudo update-alternatives --install /usr/bin/ruby ruby /usr/bin/ruby2.5 10
 sudo update-alternatives --install /usr/bin/gem gem /usr/bin/gem2.5 10
 # Instalando a versão stable mais nova do nodejs
-sudo curl -sL https://deb.nodesource.com/setup_12.x -o nodesource_setup.sh
-sudo bash nodesource_setup.sh
+sudo curl -sL https://deb.nodesource.com/setup_12.x -o nodesource_setup.sh | sudo bash
 sudo apt install nodejs -y
 # Instalando o postgresql e postgis
 sudo apt-get install postgresql-10 postgresql-contrib postgis postgresql-10-postgis-2.4 postgresql-10-postgis-2.4-scripts -y
