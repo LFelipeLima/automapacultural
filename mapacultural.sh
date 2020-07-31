@@ -211,6 +211,7 @@ deploy(){
 }
 
 main(){
+  DOMINIO="meudominio.gov.br"
   nginxConf
 }
 
