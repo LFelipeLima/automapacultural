@@ -12,16 +12,32 @@
 # Instalando os minificadores de código Javascript e CSS: uglify-js, uglifycss e autoprefixer
 
 instaladores(){
-  sudo apt-get update && sudo apt-get upgrade
+  sudo apt-get update
+  wait
+  sudo apt-get upgrade
+  wait
   sudo apt-get install git curl npm ruby2.5 ruby2.5-dev -y
-  sudo curl -sL https://deb.nodesource.com/setup_12.x -o nodesource_setup.sh | sudo bash && sudo apt install nodejs -y
+  wait
+  sudo curl -sL https://deb.nodesource.com/setup_12.x -o nodesource_setup.sh | sudo bash
+  wait
+  sudo apt install nodejs -y
+  wait
   sudo apt-get install postgresql-10 postgresql-contrib postgis postgresql-10-postgis-2.4 postgresql-10-postgis-2.4-scripts -y
+  wait
   sudo apt-get install php7.2 php7.2-gd php7.2-cli php7.2-json php7.2-curl php7.2-pgsql php-apcu php7.2-fpm imagemagick libmagickcore-dev libmagickwand-dev php7.2-imagick -y
+  wait
   sudo apt-get install php7.2-common php7.2-mbstring php7.2-xml php7.2-zip -y
+  wait
   sudo apt-get install nginx -y
-  sudo curl -sS https://getcomposer.org/installer | php && sudo mv composer.phar /usr/local/bin/composer.phar
+  wait
+  sudo curl -sS https://getcomposer.org/installer | php
+  wait
+  sudo mv composer.phar /usr/local/bin/composer.phar
+  wait
   sudo apt-get install zip unzip -y
+  wait
   sudo npm install -g uglify-js2 uglifycss autoprefixer
+  wait
 }
 
 # Atualizar referências para a versão de ruby 2.5
@@ -45,14 +61,17 @@ atualizaRef(){
 clonaRep(){
   sudo useradd -G www-data -d /srv/mapas -m mapas
   wait
-  sudo -H -u mapas bash -c "git clone https://github.com/mapasculturais/mapasculturais.git"
+  sudo runuser -l mapas -c "git clone https://github.com/mapasculturais/mapasculturais.git"
   wait
-  sudo -H -u mapas bash -c "cd mapasculturais"
-  sudo -H -u mapas bash -c "git checkout master"
-  sudo -H -u mapas bash -c "git pull origin master"
+  sudo runuser -l mapas -c "cd mapasculturais"
   wait
-  sudo -H -u mapas bash -c "cd ~/mapasculturais/src/protected/ && composer.phar install"
+  sudo runuser -l mapas -c "git checkout master"
   wait
+  sudo runuser -l mapas -c "git pull origin master"
+  wait
+  sudo runuser -l mapas -c "cd ~/mapasculturais/src/protected/"
+  wait
+  sudo runuser -l mapas -c "composer.phar install"
 }
 
 # 4. Banco de Dados
@@ -62,17 +81,20 @@ clonaRep(){
 # Volte a "logar" com o usuário criado e importar o esquema da base de dados
 banco(){
   sudo -u postgres psql -c "CREATE USER mapas"
+  wait
   sudo -u postgres createdb --owner mapas mapas
+  wait
   sudo -u postgres psql -d mapas -c "CREATE EXTENSION postgis;"
+  wait
   sudo -u postgres psql -d mapas -c "CREATE EXTENSION unaccent;"
   wait
-  sudo -H -u mapas bash -c "psql -f mapasculturais/db/schema.sql"
+  sudo runuser -l mapas -c "psql -f mapasculturais/db/schema.sql"
   wait
 }
 
 # 5. Configurações de instalação
 confInst(){
-  sudo -H -u mapas bash -c "cp mapasculturais/src/protected/application/conf/config.template.php mapasculturais/src/protected/application/conf/config.php"
+  sudo runuser -l mapas -c "cp mapasculturais/src/protected/application/conf/config.template.php mapasculturais/src/protected/application/conf/config.php"
 }
 
 # Criando diretórios de log, files e estilo
@@ -82,9 +104,11 @@ criandoDir(){
   wait
   sudo chown mapas:www-data /var/log/mapasculturais
   wait
-  sudo -H -u mapas bash -c "mkdir mapasculturais/src/assets"
-  sudo -H -u mapas bash -c "mkdir mapasculturais/src/files"
-  sudo -H -u mapas bash -c "mkdir mapasculturais/private-files"
+  sudo runuser -l mapas -c "mkdir mapasculturais/src/assets"
+  wait
+  sudo runuser -l mapas -c "mkdir mapasculturais/src/files"
+  wait
+  sudo runuser -l mapas -c "mkdir mapasculturais/private-files"
   wait
 }
 
@@ -147,8 +171,9 @@ EOF
 sudo ln -s /etc/nginx/sites-available/mapas.conf /etc/nginx/sites-enabled/mapas.conf
 wait
 sudo rm /etc/nginx/sites-available/default
+wait
 sudo rm /etc/nginx/sites-enabled/default
-
+wait
 }
 
 # Configurações pool do php7.2-fpm: Cria o arquivo /etc/php/7.2/fpm/pool.d/mapas.conf
@@ -179,9 +204,10 @@ EOF
 #7. Concluindo
 # Precisamos popular o banco de dados com os dados iniciais e executar um script que entre outras coisas compila e minifica os assets, otimiza o autoload de classes do composer e roda atualizações do banco.
 deploy(){
-  sudo -H -u mapas bash -c "psql -f mapasculturais/db/initial-data.sql"
+  sudo runuser -l mapas -c "psql -f mapasculturais/db/initial-data.sql"
   wait
-  sudo -H -u mapas bash -c "./mapasculturais/scripts/deploy.sh"
+  sudo runuser -l mapas -c "./mapasculturais/scripts/deploy.sh"
+  wait
 }
 
 main(){
