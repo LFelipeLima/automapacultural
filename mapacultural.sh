@@ -183,7 +183,7 @@ confPool(){
   ; php_admin_value[error_log] = /var/log/mapasculturais/php.error.log
   ; php_admin_flag[log_errors] = on
   php_admin_value[display_errors] = 'stderr'
-  EOF
+EOF
 }
 
 #7. Concluindo
