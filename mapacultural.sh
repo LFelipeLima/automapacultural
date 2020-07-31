@@ -46,15 +46,15 @@ atualizaRef(){
 # Agora vamos instalar as dependências de PHP utilizando o Composer
 clonaRep(){
   sudo useradd -G www-data -d /srv/mapas -m mapas
-  sleep 5
+  wait
   sudo su - mapas
-  sleep 5
+  wait
   git clone https://github.com/mapasculturais/mapasculturais.git
-  sleep 60
+  wait
   cd mapasculturais
   git checkout master
   git pull origin master
-  sleep 10
+  wait
   cd ~/mapasculturais/src/protected/ && composer.phar install
   exit
 }
@@ -69,11 +69,11 @@ banco(){
   sudo -u postgres createdb --owner mapas mapas
   sudo -u postgres psql -d mapas -c "CREATE EXTENSION postgis;"
   sudo -u postgres psql -d mapas -c "CREATE EXTENSION unaccent;"
-  sleep 10
+  wait
   sudo su - mapas
-  sleep 5
+  wait
   psql -f mapasculturais/db/schema.sql
-  sleep 5
+  wait
 }
 
 # 5. Configurações de instalação
@@ -86,11 +86,11 @@ confInst(){
 #Com o usuário criado, crie a pasta para os assets, para os uploads e para os uploads privados (arquivos protegidos, como anexos de inscrições em oportunidades)
 criandoDir(){
   sudo mkdir /var/log/mapasculturais
-  sleep 5
+  wait
   sudo chown mapas:www-data /var/log/mapasculturais
-  sleep 5
+  wait
   sudo su - mapas
-  sleep 5
+  wait
   mkdir mapasculturais/src/assets
   mkdir mapasculturais/src/files
   mkdir mapasculturais/private-files
@@ -155,7 +155,7 @@ nginxConf() {
 EOF
 
 sudo ln -s /etc/nginx/sites-available/mapas.conf /etc/nginx/sites-enabled/mapas.conf
-sleep 5
+wait
 sudo rm /etc/nginx/sites-available/default
 sudo rm /etc/nginx/sites-enabled/default
 
@@ -190,33 +190,34 @@ EOF
 # Precisamos popular o banco de dados com os dados iniciais e executar um script que entre outras coisas compila e minifica os assets, otimiza o autoload de classes do composer e roda atualizações do banco.
 deploy(){
   sudo su - mapas
-  sleep 5
+  wait
   psql -f mapasculturais/db/initial-data.sql
-  sleep 5
+  wait
   ./mapasculturais/scripts/deploy.sh
   exit
 }
 
 clear
 entradasDom()
-sleep 5
+wait
 instaladores()
-sleep 5
+wait
 atualizaRef()
-sleep 5
+wait
 clonaRep()
-sleep 5
+wait
 banco()
-sleep 5
+wait
 confInst()
-sleep 5
+wait
 criandoDir()
-sleep 5
+wait
 nginxConf()
-sleep 5
+wait
 confPool()
-sleep 5
+wait
 deploy()
-sleep 30
+wait
 sudo service nginx restart
+wait
 sudo service php7.2-fpm restart
