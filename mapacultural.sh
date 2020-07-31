@@ -56,7 +56,7 @@ clonaRep(){
   git pull origin master
   wait
   cd ~/mapasculturais/src/protected/ && composer.phar install
-  exit
+  logout
 }
 
 # 4. Banco de Dados
@@ -79,7 +79,7 @@ banco(){
 # 5. Configurações de instalação
 confInst(){
   cp mapasculturais/src/protected/application/conf/config.template.php mapasculturais/src/protected/application/conf/config.php
-  exit
+  logout
 }
 
 # Criando diretórios de log, files e estilo
@@ -94,15 +94,14 @@ criandoDir(){
   mkdir mapasculturais/src/assets
   mkdir mapasculturais/src/files
   mkdir mapasculturais/private-files
-  exit
+  logout
 }
 
 #6. Configuração do nginx
 # Muita atenção aqui, digite seu domínio ou IP fixo dependendo de qual for o seu caso.
 entradasDom(){
   clear
-  echo "Digite seu domínio ou IP fixo dependendo de qual for o seu caso:"
-  echo "Ex: meu.dominio.gov.br ou 1.1.1.1"
+  echo "Digite seu domínio ou IP fixo dependendo de qual for o seu caso (Ex: meu.dominio.gov.br ou 1.1.1.1)"
   read dominio;
 }
 
@@ -194,7 +193,7 @@ deploy(){
   psql -f mapasculturais/db/initial-data.sql
   wait
   ./mapasculturais/scripts/deploy.sh
-  exit
+  logout
 }
 
 main(){
