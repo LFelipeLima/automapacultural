@@ -115,7 +115,7 @@ criandoDir(){
 #6. Configuração do nginx
 # Muita atenção aqui, digite seu domínio ou IP fixo dependendo de qual for o seu caso.
 entradasDom(){
-  echo "Digite seu domínio ou IP fixo dependendo de qual for o seu caso (Ex: meu.dominio.gov.br ou 1.1.1.1)"
+  echo "Digite seu domínio ou IP fixo (Ex: meu.dominio.gov.br ou 1.1.1.1)"
   read dominio;
   wait
 }
@@ -126,7 +126,7 @@ entradasDom(){
 nginxConf() {
   sudo cat > /etc/nginx/sites-available/mapas.conf <<EOF
   server {
-    set $site_name $dominio;
+    set $site_name $DOMINIO;
     
     listen *:80;
     server_name $site_name;
@@ -180,7 +180,7 @@ wait
 confPool(){
   sudo cat > /etc/php/7.2/fpm/pool.d/mapas.conf <<EOF
   [mapas]
-  listen = /var/run/php/php7.2-fpm-$dominio.sock
+  listen = /var/run/php/php7.2-fpm-$DOMINIO.sock
   listen.owner = mapas
   listen.group = www-data 
   user = mapas
@@ -212,7 +212,7 @@ deploy(){
 
 main(){
   clear
-  entradasDom
+  read -p "Digite seu domínio ou IP fixo (Ex: meu.dominio.gov.br ou 1.1.1.1)" DOMINIO
   wait
   instaladores
   wait
