@@ -93,6 +93,7 @@ criandoDir(){
 entradasDom(){
   echo "Digite seu domínio ou IP fixo dependendo de qual for o seu caso (Ex: meu.dominio.gov.br ou 1.1.1.1)"
   read dominio;
+  wait
 }
 
 # Precisamos criar o virtual host do nginx para a aplicação. Para isto crie, como root, o arquivo /etc/nginx/sites-available/mapas.conf
