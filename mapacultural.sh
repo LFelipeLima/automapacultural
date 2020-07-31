@@ -197,27 +197,31 @@ deploy(){
   exit
 }
 
-clear
-entradasDom()
-wait
-instaladores()
-wait
-atualizaRef()
-wait
-clonaRep()
-wait
-banco()
-wait
-confInst()
-wait
-criandoDir()
-wait
-nginxConf()
-wait
-confPool()
-wait
-deploy()
-wait
-sudo service nginx restart
-wait
-sudo service php7.2-fpm restart
+main(){
+  clear
+  entradasDom
+  wait
+  instaladores
+  wait
+  atualizaRef
+  wait
+  clonaRep
+  wait
+  banco
+  wait
+  confInst
+  wait
+  criandoDir
+  wait
+  nginxConf
+  wait
+  confPool
+  wait
+  deploy
+  wait
+  sudo service nginx restart
+  wait
+  sudo service php7.2-fpm restart
+}
+
+main
