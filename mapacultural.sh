@@ -1,8 +1,6 @@
 #!/bin/bash
 # Script foi criado utilizando o tutorial do wiusmarques https://github.com/wiusmarques/mapasculturais
 
-dominio=0
-
 # Atualizando os repositórios de referência de sua máquina
 # Instalando as dependências diversas
 # Instalando a versão stable mais nova do nodejs
@@ -47,16 +45,14 @@ atualizaRef(){
 clonaRep(){
   sudo useradd -G www-data -d /srv/mapas -m mapas
   wait
-  sudo su - mapas
+  sudo -H -u mapas bash -c git clone https://github.com/mapasculturais/mapasculturais.git 
   wait
-  git clone https://github.com/mapasculturais/mapasculturais.git
+  sudo -H -u mapas bash -c cd mapasculturais
+  sudo -H -u mapas bash -c git checkout master
+  sudo -H -u mapas bash -c git pull origin master
   wait
-  cd mapasculturais
-  git checkout master
-  git pull origin master
+  sudo -H -u mapas bash -c cd ~/mapasculturais/src/protected/ && composer.phar install
   wait
-  cd ~/mapasculturais/src/protected/ && composer.phar install
-  logout
 }
 
 # 4. Banco de Dados
@@ -70,16 +66,13 @@ banco(){
   sudo -u postgres psql -d mapas -c "CREATE EXTENSION postgis;"
   sudo -u postgres psql -d mapas -c "CREATE EXTENSION unaccent;"
   wait
-  sudo su - mapas
-  wait
-  psql -f mapasculturais/db/schema.sql
+  sudo -H -u mapas bash -c psql -f mapasculturais/db/schema.sql
   wait
 }
 
 # 5. Configurações de instalação
 confInst(){
-  cp mapasculturais/src/protected/application/conf/config.template.php mapasculturais/src/protected/application/conf/config.php
-  logout
+  sudo -H -u mapas bash -c cp mapasculturais/src/protected/application/conf/config.template.php mapasculturais/src/protected/application/conf/config.php
 }
 
 # Criando diretórios de log, files e estilo
@@ -89,12 +82,10 @@ criandoDir(){
   wait
   sudo chown mapas:www-data /var/log/mapasculturais
   wait
-  sudo su - mapas
+  sudo -H -u mapas bash -c mkdir mapasculturais/src/assets
+  sudo -H -u mapas bash -c mkdir mapasculturais/src/files
+  sudo -H -u mapas bash -c mkdir mapasculturais/private-files
   wait
-  mkdir mapasculturais/src/assets
-  mkdir mapasculturais/src/files
-  mkdir mapasculturais/private-files
-  logout
 }
 
 #6. Configuração do nginx
@@ -188,12 +179,9 @@ EOF
 #7. Concluindo
 # Precisamos popular o banco de dados com os dados iniciais e executar um script que entre outras coisas compila e minifica os assets, otimiza o autoload de classes do composer e roda atualizações do banco.
 deploy(){
-  sudo su - mapas
+  sudo -H -u mapas bash -c psql -f mapasculturais/db/initial-data.sql
   wait
-  psql -f mapasculturais/db/initial-data.sql
-  wait
-  ./mapasculturais/scripts/deploy.sh
-  logout
+  sudo -H -u mapas bash -c ./mapasculturais/scripts/deploy.sh
 }
 
 main(){
