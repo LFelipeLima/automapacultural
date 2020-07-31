@@ -23,7 +23,7 @@ instaladores(){
   sudo apt-get install nginx -y
   sudo curl -sS https://getcomposer.org/installer | php && sudo mv composer.phar /usr/local/bin/composer.phar
   sudo apt-get install zip unzip -y
-  sudo npm install -g uglify-js2 uglifycss autoprefixer -y
+  sudo npm install -g uglify-js2 uglifycss autoprefixer
 }
 
 # Atualizar referências para a versão de ruby 2.5
@@ -35,7 +35,7 @@ atualizaRef(){
   sudo update-alternatives --install /usr/bin/gem gem /usr/bin/gem2.5 10
   sudo update-alternatives --install /usr/bin/node node /usr/bin/nodejs 10
   sudo update-alternatives --install /usr/bin/uglifyjs uglifyjs /usr/bin/uglifyjs2 10
-  sudo gem install sass -v 3.4.22 -y
+  sudo gem install sass -v 3.4.22
 }
 
 # 3. Clonando o repositório
