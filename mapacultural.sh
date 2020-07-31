@@ -124,12 +124,12 @@ entradasDom(){
 # Criando o link para habilitar o virtual host
 # Remove o arquivo default da pasta /etc/nginx/sites-available/ e /etc/nginx/sites-enabled/
 nginxConf() {
-  sudo cat > /etc/nginx/sites-available/mapas.conf <<EOF
+  sudo cat <<'EOF' >/etc/nginx/sites-available/mapas.conf
   server {
-    set \$site_name \$1;
+    set $site_name $1;
     
     listen *:80;
-    server_name \$site_name;
+    server_name $site_name;
     access_log   /var/log/mapasculturais/nginx.access.log;
     error_log    /var/log/mapasculturais/nginx.error.log;
 
@@ -137,7 +137,7 @@ nginxConf() {
     root  /srv/mapas/mapasculturais/src/;
 
     location / {
-      try_files \$uri \$uri / /index.php?\$args;
+      try_files $uri $uri / /index.php?$args;
     }
   
     location ~ /files/.*\.php$ {
@@ -151,10 +151,10 @@ nginxConf() {
     }
 
     location ~ \.php$ {
-      try_files \$uri =404;
+      try_files $uri =404;
       include fastcgi_params;
-      fastcgi_param SCRIPT_FILENAME \$document_root\$fastcgi_script_name;
-      fastcgi_pass unix:/var/run/php/php7.2-fpm-\$site_name.sock;
+      fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
+      fastcgi_pass unix:/var/run/php/php7.2-fpm-$site_name.sock;
       client_max_body_size 0;
     }
 
@@ -163,8 +163,8 @@ nginxConf() {
 
   server {
     listen *:80;
-    server_name \$site_name;
-    return 301 \$scheme://\$site_name\$request_uri;
+    server_name $site_name;
+    return 301 $scheme://$site_name$request_uri;
   }
 EOF
 
@@ -211,9 +211,9 @@ deploy(){
 }
 
 main(){
-  DOMINIO="meudominio.gov.br"
+  DOMINIO='meudominio.gov.br';
   nginxConf DOMINIO
 }
 
-read -p "Digite seu domínio ou IP fixo (Ex: meu.dominio.gov.br ou 1.1.1.1): " DOMINIO
+sudo read -p "Digite seu domínio ou IP fixo (Ex: meu.dominio.gov.br ou 1.1.1.1): " DOMINIO
 main
