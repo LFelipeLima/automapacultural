@@ -199,7 +199,6 @@ deploy(){
 
 clear
 entradasDom()
-echo "Instalando..."
 sleep 5
 instaladores()
 sleep 5
