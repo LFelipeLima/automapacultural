@@ -45,13 +45,13 @@ atualizaRef(){
 clonaRep(){
   sudo useradd -G www-data -d /srv/mapas -m mapas
   wait
-  sudo -H -u mapas bash -c git clone https://github.com/mapasculturais/mapasculturais.git 
+  sudo -H -u mapas bash -c "git clone https://github.com/mapasculturais/mapasculturais.git"
   wait
-  sudo -H -u mapas bash -c cd mapasculturais
-  sudo -H -u mapas bash -c git checkout master
-  sudo -H -u mapas bash -c git pull origin master
+  sudo -H -u mapas bash -c "cd mapasculturais"
+  sudo -H -u mapas bash -c "git checkout master"
+  sudo -H -u mapas bash -c "git pull origin master"
   wait
-  sudo -H -u mapas bash -c cd ~/mapasculturais/src/protected/ && composer.phar install
+  sudo -H -u mapas bash -c "cd ~/mapasculturais/src/protected/ && composer.phar install"
   wait
 }
 
@@ -66,13 +66,13 @@ banco(){
   sudo -u postgres psql -d mapas -c "CREATE EXTENSION postgis;"
   sudo -u postgres psql -d mapas -c "CREATE EXTENSION unaccent;"
   wait
-  sudo -H -u mapas bash -c psql -f mapasculturais/db/schema.sql
+  sudo -H -u mapas bash -c "psql -f mapasculturais/db/schema.sql"
   wait
 }
 
 # 5. Configurações de instalação
 confInst(){
-  sudo -H -u mapas bash -c cp mapasculturais/src/protected/application/conf/config.template.php mapasculturais/src/protected/application/conf/config.php
+  sudo -H -u mapas bash -c "cp mapasculturais/src/protected/application/conf/config.template.php mapasculturais/src/protected/application/conf/config.php"
 }
 
 # Criando diretórios de log, files e estilo
@@ -82,16 +82,15 @@ criandoDir(){
   wait
   sudo chown mapas:www-data /var/log/mapasculturais
   wait
-  sudo -H -u mapas bash -c mkdir mapasculturais/src/assets
-  sudo -H -u mapas bash -c mkdir mapasculturais/src/files
-  sudo -H -u mapas bash -c mkdir mapasculturais/private-files
+  sudo -H -u mapas bash -c "mkdir mapasculturais/src/assets"
+  sudo -H -u mapas bash -c "mkdir mapasculturais/src/files"
+  sudo -H -u mapas bash -c "mkdir mapasculturais/private-files"
   wait
 }
 
 #6. Configuração do nginx
 # Muita atenção aqui, digite seu domínio ou IP fixo dependendo de qual for o seu caso.
 entradasDom(){
-  clear
   echo "Digite seu domínio ou IP fixo dependendo de qual for o seu caso (Ex: meu.dominio.gov.br ou 1.1.1.1)"
   read dominio;
 }
@@ -179,9 +178,9 @@ EOF
 #7. Concluindo
 # Precisamos popular o banco de dados com os dados iniciais e executar um script que entre outras coisas compila e minifica os assets, otimiza o autoload de classes do composer e roda atualizações do banco.
 deploy(){
-  sudo -H -u mapas bash -c psql -f mapasculturais/db/initial-data.sql
+  sudo -H -u mapas bash -c "psql -f mapasculturais/db/initial-data.sql"
   wait
-  sudo -H -u mapas bash -c ./mapasculturais/scripts/deploy.sh
+  sudo -H -u mapas bash -c "./mapasculturais/scripts/deploy.sh"
 }
 
 main(){
