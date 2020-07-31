@@ -211,7 +211,6 @@ deploy(){
 }
 
 main(){
-  clear
   read -p "Digite seu domínio ou IP fixo (Ex: meu.dominio.gov.br ou 1.1.1.1): " DOMINIO
 }
 
