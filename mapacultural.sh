@@ -18,7 +18,7 @@ instaladores(){
   wait
   sudo apt-get install git curl npm ruby2.5 ruby2.5-dev -y
   wait
-  sudo curl -sL https://deb.nodesource.com/setup_12.x -o nodesource_setup.sh | sudo bash
+  sudo curl -sL https://deb.nodesource.com/setup_12.x -o nodesource_setup.sh
   wait
   sudo apt install nodejs -y
   wait
