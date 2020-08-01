@@ -218,3 +218,4 @@ main(){
 echo "Digite seu domínio ou IP fixo (Ex: meu.dominio.gov.br ou 1.1.1.1): "
 read DOMINIO
 main
+echo $DOMINIO
