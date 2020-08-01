@@ -221,9 +221,9 @@ main(){
   wait
   criandoDir
   wait
-  nginxConf($DOMINIO)
+  nginxConf $DOMINIO
   wait
-  confPool($DOMINIO)
+  confPool $DOMINIO
   wait
   deploy
   wait
