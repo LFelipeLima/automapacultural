@@ -175,25 +175,25 @@ EOF
 # Configurações pool do php7.2-fpm: Cria o arquivo /etc/php/7.2/fpm/pool.d/mapas.conf
 confPool(){
   sudo cat <<EOF >/etc/php/7.2/fpm/pool.d/mapas.conf
-  [mapas]
-  listen = /var/run/php/php7.2-fpm-$1.sock
-  listen.owner = mapas
-  listen.group = www-data 
-  user = mapas
-  group = www-data
-  catch_workers_output = yes
-  pm = dynamic
-  pm.max_children = 10
-  pm.start_servers = 1
-  pm.min_spare_servers = 1
-  pm.max_spare_servers = 3
-  pm.max_requests = 500
-  chdir = /srv/mapas
-  ; php_admin_value[open_basedir] = /srv/mapas:/tmp
-  php_admin_value[session.save_path] = /tmp/
-  ; php_admin_value[error_log] = /var/log/mapasculturais/php.error.log
-  ; php_admin_flag[log_errors] = on
-  php_admin_value[display_errors] = 'stderr'
+[mapas]
+listen = /var/run/php/php7.2-fpm-$1.sock
+listen.owner = mapas
+listen.group = www-data 
+user = mapas
+group = www-data
+catch_workers_output = yes
+pm = dynamic
+pm.max_children = 10
+pm.start_servers = 1
+pm.min_spare_servers = 1
+pm.max_spare_servers = 3
+pm.max_requests = 500
+chdir = /srv/mapas
+; php_admin_value[open_basedir] = /srv/mapas:/tmp
+php_admin_value[session.save_path] = /tmp/
+; php_admin_value[error_log] = /var/log/mapasculturais/php.error.log
+; php_admin_flag[log_errors] = on
+php_admin_value[display_errors] = 'stderr'
 EOF
 }
 
