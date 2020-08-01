@@ -126,7 +126,7 @@ entradasDom(){
 nginxConf() {
   sudo cat <<'EOF' >/etc/nginx/sites-available/mapas.conf
   server {
-    set $site_name $1;
+    set $site_name "$1";
     
     listen *:80;
     server_name $site_name;
@@ -215,5 +215,6 @@ main(){
   nginxConf DOMINIO
 }
 
-read -p "Digite seu domínio ou IP fixo (Ex: meu.dominio.gov.br ou 1.1.1.1): " DOMINIO
+echo "Digite seu domínio ou IP fixo (Ex: meu.dominio.gov.br ou 1.1.1.1): "
+read DOMINIO
 main
