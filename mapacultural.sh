@@ -126,13 +126,16 @@ criandoDir(){
 nginxConf() {
   sudo cat <<EOF >/etc/nginx/sites-available/mapas.conf
   server {
+    set \$site_name $1; 
 
     listen *:80;
     server_name $1;
     access_log   /var/log/mapasculturais/nginx.access.log;
     error_log    /var/log/mapasculturais/nginx.error.log;
+    
     index index.php;
     root  /srv/mapas/mapasculturais/src/;
+    
     location / {
       try_files \$uri \$uri/ /index.php?\$args;
     }
@@ -145,11 +148,12 @@ nginxConf() {
           expires 1w;
           log_not_found off;
     }
+    
     location ~ \.php$ {
       try_files \$uri =404;
       include fastcgi_params;
       fastcgi_param SCRIPT_FILENAME \$document_root\$fastcgi_script_name;
-      fastcgi_pass unix:/var/run/php/php7.2-fpm-$1.sock;
+      fastcgi_pass unix:/var/run/php/php7.2-fpm-\$site_name.sock;
       client_max_body_size 0;
     }
     charset utf-8;
@@ -166,13 +170,11 @@ EOF
   sudo rm /etc/nginx/sites-available/default
   wait
   sudo rm /etc/nginx/sites-enabled/default
-  wait
-  read teste
 }
 
 # Configurações pool do php7.2-fpm: Cria o arquivo /etc/php/7.2/fpm/pool.d/mapas.conf
 confPool(){
-  sudo cat << EOF > /etc/php/7.2/fpm/pool.d/mapas.conf
+  sudo cat <<EOF >/etc/php/7.2/fpm/pool.d/mapas.conf
   [mapas]
   listen = /var/run/php/php7.2-fpm-$1.sock
   listen.owner = mapas
@@ -208,6 +210,8 @@ deploy(){
 # Main
 
 main(){
+  clear
+  echo "Iniciando instalação do Mapa Cultural...."
   echo "Digite seu domínio ou IP fixo (Ex: meu.dominio.gov.br ou 1.1.1.1): ";
   read DOMINIO;
   wait
