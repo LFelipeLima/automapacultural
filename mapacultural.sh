@@ -18,6 +18,10 @@ instaladores(){
   wait
   sudo apt-get install git curl npm ruby2.5 ruby2.5-dev -y
   wait
+  sudo update-alternatives --install /usr/bin/ruby ruby /usr/bin/ruby2.5 10
+  wait
+  sudo update-alternatives --install /usr/bin/gem gem /usr/bin/gem2.5 10
+  wait
   sudo curl -sL https://deb.nodesource.com/setup_12.x -o nodesource_setup.sh
   wait
   sudo apt install nodejs -y
@@ -43,8 +47,6 @@ instaladores(){
 # Instalando o SASS, utilizado para compilar os arquivos CSS
 
 atualizaRef(){
-  sudo update-alternatives --install /usr/bin/ruby ruby /usr/bin/ruby2.5 10
-  sudo update-alternatives --install /usr/bin/gem gem /usr/bin/gem2.5 10
   sudo update-alternatives --install /usr/bin/node node /usr/bin/nodejs 10
   wait
   sudo npm install -g uglify-js2 uglifycss autoprefixer
@@ -163,6 +165,7 @@ EOF
   wait
   sudo rm /etc/nginx/sites-enabled/default
   wait
+  read teste
 }
 
 # Configurações pool do php7.2-fpm: Cria o arquivo /etc/php/7.2/fpm/pool.d/mapas.conf
@@ -218,9 +221,9 @@ main(){
   wait
   criandoDir
   wait
-  nginxConf $DOMINIO
+  nginxConf($DOMINIO)
   wait
-  confPool $DOMINIO
+  confPool($DOMINIO)
   wait
   deploy
   wait
