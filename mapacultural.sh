@@ -72,6 +72,7 @@ clonaRep(){
   sudo runuser -l mapas -c "cd ~/mapasculturais/src/protected/"
   wait
   sudo runuser -l mapas -c "composer.phar install"
+  wait
 }
 
 # 4. Banco de Dados
@@ -153,6 +154,7 @@ nginxConf() {
     return 301 \$scheme://$1\$request_uri;
   }
 EOF
+  wait
   sudo ln -s /etc/nginx/sites-available/mapas.conf /etc/nginx/sites-enabled/mapas.conf
   wait
   sudo rm /etc/nginx/sites-available/default
