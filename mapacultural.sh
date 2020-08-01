@@ -12,9 +12,9 @@
 # Instalando os minificadores de código Javascript e CSS: uglify-js, uglifycss e autoprefixer
 
 instaladores(){
-  sudo apt-get update
+  sudo apt-get update -y
   wait
-  sudo apt-get upgrade
+  sudo apt-get upgrade -y
   wait
   sudo apt-get install git curl npm ruby2.5 ruby2.5-dev -y
   wait
@@ -36,8 +36,6 @@ instaladores(){
   wait
   sudo apt-get install zip unzip -y
   wait
-  sudo npm install -g uglify-js2 uglifycss autoprefixer
-  wait
 }
 
 # Atualizar referências para a versão de ruby 2.5
@@ -48,7 +46,11 @@ atualizaRef(){
   sudo update-alternatives --install /usr/bin/ruby ruby /usr/bin/ruby2.5 10
   sudo update-alternatives --install /usr/bin/gem gem /usr/bin/gem2.5 10
   sudo update-alternatives --install /usr/bin/node node /usr/bin/nodejs 10
+  wait
+  sudo npm install -g uglify-js2 uglifycss autoprefixer
+  wait
   sudo update-alternatives --install /usr/bin/uglifyjs uglifyjs /usr/bin/uglifyjs2 10
+  wait
   sudo gem install sass -v 3.4.22
 }
 
