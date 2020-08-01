@@ -113,74 +113,59 @@ criandoDir(){
 }
 
 #6. Configuração do nginx
-# Muita atenção aqui, digite seu domínio ou IP fixo dependendo de qual for o seu caso.
-entradasDom(){
-  echo "Digite seu domínio ou IP fixo (Ex: meu.dominio.gov.br ou 1.1.1.1)"
-  read dominio;
-  wait
-}
-
 # Precisamos criar o virtual host do nginx para a aplicação. Para isto crie, como root, o arquivo /etc/nginx/sites-available/mapas.conf
 # Criando o link para habilitar o virtual host
 # Remove o arquivo default da pasta /etc/nginx/sites-available/ e /etc/nginx/sites-enabled/
 nginxConf() {
-  sudo cat <<'EOF' >/etc/nginx/sites-available/mapas.conf
+  sudo cat <<EOF >/etc/nginx/sites-available/mapas.conf
   server {
-    set $site_name "$1";
-    
+
     listen *:80;
-    server_name $site_name;
+    server_name $1;
     access_log   /var/log/mapasculturais/nginx.access.log;
     error_log    /var/log/mapasculturais/nginx.error.log;
-
     index index.php;
     root  /srv/mapas/mapasculturais/src/;
-
     location / {
-      try_files $uri $uri / /index.php?$args;
+      try_files \$uri \$uri / /index.php?\$args;
     }
-  
+
     location ~ /files/.*\.php$ {
       return 80;
     }
-  
 
     location ~* \.(js|css|png|jpg|jpeg|gif|ico|woff)$ {
           expires 1w;
           log_not_found off;
     }
-
     location ~ \.php$ {
-      try_files $uri =404;
+      try_files \$uri =404;
       include fastcgi_params;
-      fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
-      fastcgi_pass unix:/var/run/php/php7.2-fpm-$site_name.sock;
+      fastcgi_param SCRIPT_FILENAME \$document_root\$fastcgi_script_name;
+      fastcgi_pass unix:/var/run/php/php7.2-fpm-$1.sock;
       client_max_body_size 0;
     }
-
     charset utf-8;
   }
-
   server {
     listen *:80;
-    server_name $site_name;
-    return 301 $scheme://$site_name$request_uri;
+    server_name $1;
+    return 301 \$scheme://$1\$request_uri;
   }
 EOF
-
-sudo ln -s /etc/nginx/sites-available/mapas.conf /etc/nginx/sites-enabled/mapas.conf
-wait
-sudo rm /etc/nginx/sites-available/default
-wait
-sudo rm /etc/nginx/sites-enabled/default
-wait
+  sudo ln -s /etc/nginx/sites-available/mapas.conf /etc/nginx/sites-enabled/mapas.conf
+  wait
+  sudo rm /etc/nginx/sites-available/default
+  wait
+  sudo rm /etc/nginx/sites-enabled/default
+  wait
 }
 
 # Configurações pool do php7.2-fpm: Cria o arquivo /etc/php/7.2/fpm/pool.d/mapas.conf
 confPool(){
-  sudo cat > /etc/php/7.2/fpm/pool.d/mapas.conf <<EOF
+  sudo cat << EOF > /etc/php/7.2/fpm/pool.d/mapas.conf
   [mapas]
-  listen = /var/run/php/php7.2-fpm-"$DOMINIO".sock
+  listen = /var/run/php/php7.2-fpm-$1.sock
   listen.owner = mapas
   listen.group = www-data 
   user = mapas
@@ -210,12 +195,36 @@ deploy(){
   wait
 }
 
+# Muita atenção aqui, digite seu domínio ou IP fixo dependendo de qual for o seu caso.
+# Main
+
 main(){
-  DOMINIO='meudominio.gov.br';
-  nginxConf DOMINIO
+  echo "Digite seu domínio ou IP fixo (Ex: meu.dominio.gov.br ou 1.1.1.1): ";
+  read DOMINIO;
+  wait
+  instaladores
+  wait
+  atualizaRef
+  wait
+  clonaRep
+  wait
+  banco
+  wait
+  confInst
+  wait
+  criandoDir
+  wait
+  nginxConf $DOMINIO
+  wait
+  confPool $DOMINIO
+  wait
+  deploy
+  wait
+  sudo service nginx restart
+  wait
+  sudo service php7.2-fpm restart
 }
 
-echo "Digite seu domínio ou IP fixo (Ex: meu.dominio.gov.br ou 1.1.1.1): ";
-read DOMINIO;
-wait
 main
+
+
