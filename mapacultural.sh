@@ -24,6 +24,8 @@ instaladores(){
   wait
   sudo curl -sL https://deb.nodesource.com/setup_12.x -o nodesource_setup.sh
   wait
+  sudo bash nodesource_setup.sh
+  wait
   sudo apt install nodejs -y
   wait
   sudo apt-get install postgresql-10 postgresql-contrib postgis postgresql-10-postgis-2.4 postgresql-10-postgis-2.4-scripts -y
