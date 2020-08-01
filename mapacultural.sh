@@ -132,7 +132,7 @@ nginxConf() {
     index index.php;
     root  /srv/mapas/mapasculturais/src/;
     location / {
-      try_files \$uri \$uri / /index.php?\$args;
+      try_files \$uri \$uri/ /index.php?\$args;
     }
 
     location ~ /files/.*\.php$ {
