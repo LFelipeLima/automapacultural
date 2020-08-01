@@ -215,8 +215,7 @@ main(){
   nginxConf DOMINIO
 }
 
-echo "Digite seu domínio ou IP fixo (Ex: meu.dominio.gov.br ou 1.1.1.1): "
+echo "Digite seu domínio ou IP fixo (Ex: meu.dominio.gov.br ou 1.1.1.1): ";
 read DOMINIO;
 wait
 main
-echo $DOMINIO
