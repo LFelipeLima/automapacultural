@@ -28,7 +28,8 @@ instaladores(){
   wait
   sudo apt install nodejs -y
   wait
-  sudo apt-get install postgresql-10 postgresql-contrib postgis postgresql-10-postgis-2.4 postgresql-10-postgis-2.4-scripts -y
+ #sudo apt-get install postgresql-10 postgresql-contrib postgis postgresql-10-postgis-2.4 postgresql-10-postgis-2.4-scripts -y
+  sudo apt-get install postgresql-12 postgresql-contrib postgis postgresql-12-postgis-3 postgresql-12-postgis-3-scripts -y
   wait
   sudo apt-get install php7.2 php7.2-gd php7.2-cli php7.2-json php7.2-curl php7.2-pgsql php-apcu php7.2-fpm imagemagick libmagickcore-dev libmagickwand-dev php7.2-imagick -y
   wait
